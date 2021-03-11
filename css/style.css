@@ -408,6 +408,7 @@ td:hover::before {
         height: 70px;
         box-shadow: 10px 0px 30px 10px rgba(0, 0, 0, 0.5);
     }
+    button {}
 }
 
 @media screen and (max-width: 613px) {
