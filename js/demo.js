@@ -172,18 +172,20 @@ function startModify(id) {
     ajaxobj.modify_get(id);
 }
 
-function refreshTable(data) {
+function refreshTable(data, id) {
+    // alert(id);
     // var HTML = '';
     $("#cardtable tbody > tr").remove();
     $("#cardtable tbody > h5").remove();
     $(".noResult").slideUp();
     $.each(data, function(key, item) {
+        console.log(item.s_sn)
         var strsex = '';
         if (item.sex == 0)
             strsex = '男';
         else
             strsex = '女';
-        var row = $("<tr></tr>");
+        var row = $("<tr ></tr>");
         // row.append($("<td></td>").html(item.s_sn));
         row.append($("<td style='padding-left:20px' data-toggle='tooltip' data-placement='right' title='[" + strsex + "]" + item.cnname + "(" + item.enname + ")'></td>").html(item.cnname));
         row.append($("<td></td>").html(item.enname));
@@ -193,6 +195,10 @@ function refreshTable(data) {
         row.append($("<td></td>").html('<button id="modifybutton' + item.s_sn + '" class="modifybutton btn btn-secondary" type="button" data-toggle="modal" data-target="#modifyModal" onclick="startModify(' + item.s_sn + ')">修改<span class="glyphicon glyphicon-list-alt"></span></button>'));
         row.append($("<td> style='margin-right:10px'</td>").html('<button id="deletebutton' + item.s_sn + '" class="deletebutton btn btn-danger" type="button" data-toggle="modal" data-target="#deleteModal" onclick="startDelete(' + item.s_sn + ')">刪除<span class="glyphicon glyphicon-list-alt"></span></button>'));
         $("#cardtable").append(row);
+        if (id != "0" && item.s_sn == id)
+            $(row).effect("highlight", 3000);
+        else if (id == "0")
+            $(row).effect("highlight", 3000);
     });
     if (data.length == 0) {
         $(".noResult").slideDown();
@@ -322,14 +328,14 @@ AjaxObject.prototype.alertt = function() {
 AjaxObject.prototype.getall = function() {
     // response = '[{"s_sn":"35","cnname":"邱小甘","enname":"Peter","sex":"0","cell":"0900123456", "email":"peter@gmail.com"},{"s_sn":"49","cnname":"蔡凡昕","enname":"Allen","sex":"0","cell":"0976189743", "email":"allen@gmail.com"},{"s_sn":"50","cnname":"趙雪瑜","enname":"Sharon","sex":"0","cell":"0955273918", "email":"sharon@gmail.com"},{"s_sn":"51","cnname":"賴佳蓉","enname":"Yoki","sex":"1","cell":"0928182748", "email":"yoki@gmail.com"}]';
     response = JSON.stringify(memberData);
-    refreshTable(JSON.parse(response));
+    refreshTable(JSON.parse(response), "0");
 }
 AjaxObject.prototype.add = function() {
     // response = '[{"s_sn":"35","cnname":"邱小甘","enname":"Peter","sex":"0","cell":"0900123456", "email":"peter@gmail.com"},{"s_sn":"49","cnname":"蔡凡昕","enname":"Allen","sex":"0","cell":"0976189743", "email":"allen@gmail.com"},{"s_sn":"50","cnname":"趙雪瑜","enname":"Sharon","sex":"0","cell":"0955273918", "email":"sharon@gmail.com"},{"s_sn":"51","cnname":"賴佳蓉","enname":"Yoki","sex":"1","cell":"0928182748", "email":"yoki@gmail.com"},{"s_sn":"52","cnname":"新增帳號","enname":"NewAccount","sex":"1","cell":"0900000000", "email":"newaccount@gmail.com"}]';
     var s_sn = memberData[memberData.length - 1].s_sn;
     memberData.push({ "s_sn": parseInt(s_sn) + 1, "cnname": this.cnname, "enname": this.enname, "sex": this.sex, "cell": this.cell, "email": this.email })
     response = JSON.stringify(memberData);
-    refreshTable(JSON.parse(response));
+    refreshTable(JSON.parse(response), s_sn);
     // $("#dialog-addconfirm").dialog("close");
 }
 AjaxObject.prototype.modify = function(id) {
@@ -347,7 +353,7 @@ AjaxObject.prototype.modify = function(id) {
         }
     }
     response = JSON.stringify(memberData);
-    refreshTable(JSON.parse(response));
+    refreshTable(JSON.parse(response), id.toString());
 }
 AjaxObject.prototype.modify_get = function(id) {
     for (var i = 0; i < memberData.length; i++) {
@@ -381,7 +387,7 @@ AjaxObject.prototype.search = function() {
         }
     });
     response = JSON.stringify(searchArr)
-    refreshTable(JSON.parse(response));
+    refreshTable(JSON.parse(response), "0");
     // $("#dialog-searchconfirm").dialog("close");
 }
 AjaxObject.prototype.delete = function(id) {

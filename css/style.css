@@ -83,14 +83,10 @@ a:active {
     border: none;
     border-collapse: collapse; }
 
-.addShadow {
-  border-right-width: 30px;
-  border-right-style: solid;
-  border-image: linear-gradient(to right, white, rgba(0, 0, 0, 0)) 1 100%; }
-
 tr {
   box-shadow: inset -10px 10px 10px -10px white; }
   tr th {
+    vertical-align: middle !important;
     min-width: 80px;
     background-color: white;
     text-align: left;
@@ -156,12 +152,11 @@ td {
 .modal {
   text-align: center;
   border-radius: 20px;
-  overflow: hidden;
-  min-width: 400px; }
+  overflow: hidden; }
   .modal::before {
     display: inline-block;
     vertical-align: middle;
-    content: " ";
+    content: "";
     height: 100%; }
 
 .modal-dialog {
@@ -279,7 +274,6 @@ td {
 .effect {
   opacity: 0;
   transition: 0.3s;
-  overflow: scroll;
   width: 80vw;
   border-radius: 10px;
   margin-top: 100px;
@@ -325,6 +319,9 @@ td {
     width: 100vw; }
   .effect h2 {
     text-align: center; }
+  .modal {
+    width: 100vw !important;
+    height: 100vh !important; }
   .formLabel label {
     width: 50px; }
   .fix-search {
